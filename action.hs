@@ -4,4 +4,6 @@ test1 = do
 
 test2 = print 1 >> print 2
 
-main = test1 >> test2
+-- main = test1 >> test2
+main = do
+  print 1 >> print 2
