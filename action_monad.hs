@@ -14,6 +14,12 @@ replicateM_' n a | n > 0 = a >> replicateM' (n - 1) a
 forM' [] _ = return []
 forM' (x:xs) f = (:) <$> f x <*> forM' xs f
 
+forM_' [] _ = return []
+forM_' (x:xs) f = f x >> forM_' xs f
+
+when' b a = if b then a else return()
+unless' b = when' $ not b
+
 main = do
     let dice = getStdRandom $ randomR (1, 6) :: IO Int
     print =<< replicateM' 5 dice
@@ -28,16 +34,16 @@ main = do
         return i
     print a
     putStrLn "---"
-    -- forM_' [1..3] $ \i -> do
-    --     print i
-    -- putStrLn "---"
-    -- let y x = x (y x)
-    -- y $ \f -> do
-    --     r <- dice
-    --     print r
-    --     when' (r /= 1) f
-    -- putStrLn "---"
-    -- y $ \f -> do
-    --     r <- dice
-    --     print r
-    --     unless' (r == 6) f
+    forM_' [1..3] $ \i -> do
+        print i
+    putStrLn "---"
+    let y x = x (y x)
+    y $ \f -> do
+        r <- dice
+        print r
+        when' (r /= 1) f
+    putStrLn "---"
+    y $ \f -> do
+        r <- dice
+        print r
+        unless' (r == 6) f
