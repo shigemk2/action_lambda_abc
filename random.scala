@@ -15,8 +15,9 @@ for (i <- 1 to 100) {
 }
 for (i <- 0 to 12) {
   val c    = i - 6
+  val spc  = " " * (2 - c.toString.length)
   val star = "*" * count(i)
-  println(s"$c: $star")
+  println(s"$spc$c: $star")
 }
 
 
