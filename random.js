@@ -5,10 +5,10 @@ var count = [0,0,0,0,0,0,
 for(var i = 0; i < 100; i++) {
   math = 0;
   for(var j = 0; j < 12; j++) {
-    math += Math.floor(Math.random(0, 1) * 10 + 0.5) / 10;
+    math += Math.random();
   }
-  sum = Math.floor(math - 6);
-  count[Math.floor(sum + 6)] += 1;
+  sum = Math.floor(math + 0.5) - 6;
+  count[sum + 6]++;
 }
 var star = "";
 for (var i = 0; i < count.length; i++) {
