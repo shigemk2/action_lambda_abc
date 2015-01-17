@@ -1,10 +1,14 @@
 import System.Random
+import Control.Applicative
 
 replicateM' 0 _ = return []
 replicateM' n m =
-    m >>= \x ->
-    replicateM' (n - 1) m >>= \xs ->
-    return $ x : xs
+    -- m >>= \x -> replicateM' (n - 1) m >>= \xs -> return $ x : xs
+    -- m >>= \x -> replicateM' (n - 1) m >>= \xs -> return $ (:) x xs
+    -- m >>= \x -> replicateM' (n - 1) m >>= (return . (x :))
+    -- (\x -> (replicateM' (n - 1) m >>= (return . (x :)))) =<< m
+    -- (\x -> (return . (x :) =<< (replicateM' (n - 1) m))) =<< m
+    (:) <$> m <*> replicateM' (n - 1) m
 
 main = do
     let dice = getStdRandom $ randomR (1, 6) :: IO Int
