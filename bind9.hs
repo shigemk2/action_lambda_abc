@@ -1,4 +1,4 @@
 -- doあり
 main = do
-    a <- return "hello"
+    a <- print "hello"
     print a
