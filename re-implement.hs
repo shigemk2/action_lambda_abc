@@ -25,6 +25,14 @@ forM' (x:xs) f =
 forM_' [] _ = return []
 forM_' (x:xs) f = f x >> forM' xs f
 
+when' f g
+    | f = g
+    | otherwise = return ()
+
+unless' f g
+    | f == False = g
+    | otherwise = return ()
+
 main = do
     let dice = getStdRandom $ randomR (1, 6) :: IO Int
     print =<< replicateM' 5 dice
@@ -42,13 +50,13 @@ main = do
     forM_' [1..3] $ \i -> do
         print i
     putStrLn "---"
-    -- let y x = x (y x)
-    -- y $ \f -> do
-    --     r <- dice
-    --     print r
-    --     when' (r /= 1) f
-    -- putStrLn "---"
-    -- y $ \f -> do
-    --     r <- dice
-    --     print r
-    --     unless' (r == 6) f
+    let y x = x (y x)
+    y $ \f -> do
+        r <- dice
+        print r
+        when' (r /= 1) f
+    putStrLn "---"
+    y $ \f -> do
+        r <- dice
+        print r
+        unless' (r == 6) f
