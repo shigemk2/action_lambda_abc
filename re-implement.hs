@@ -15,7 +15,12 @@ replicateM_' n f = f >> replicateM' (n - 1) f
 
 forM' [] _ = return []
 forM' (x:xs) f =
-    f x >>= \x' -> forM' xs f >>= \xs' -> return $ x' : xs'
+    -- f x >>= \x' -> forM' xs f >>= \xs' -> return $ x' : xs'
+    -- f x >>= \x' -> forM' xs f >>= \xs' -> return $ (:) x' xs'
+    -- f x >>= \x' -> forM' xs f >>= (return . (x' :))
+    -- (\x' -> forM' xs f >>= (return . (x' :))) =<< f x
+    -- (\x' -> (return . (x' :)) =<< (forM' xs f)) =<< f x
+    (:) <$> f x <*> forM' xs f
 
 forM_' [] _ = return []
 forM_' (x:xs) f = f x >> forM' xs f
