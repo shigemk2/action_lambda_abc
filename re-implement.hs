@@ -11,8 +11,7 @@ replicateM' n m =
     (:) <$> m <*> replicateM' (n - 1) m
 
 replicateM_' 0 _ = return []
-replicateM_' n f = do
-    f >> replicateM' (n - 1) f
+replicateM_' n f = f >> replicateM' (n - 1) f
 
 forM' [] _ = return []
 forM' (x:xs) f = do
@@ -21,8 +20,7 @@ forM' (x:xs) f = do
     return $ x' : xs'
 
 forM_' [] _ = return []
-forM_' (x:xs) f = do
-    f x >> forM' xs f
+forM_' (x:xs) f = f x >> forM' xs f
 
 main = do
     let dice = getStdRandom $ randomR (1, 6) :: IO Int
