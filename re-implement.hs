@@ -20,6 +20,10 @@ forM' (x:xs) f = do
     xs' <- forM' xs f
     return $ x' : xs'
 
+forM_' [] _ = return []
+forM_' (x:xs) f = do
+    f x >> forM' xs f
+
 main = do
     let dice = getStdRandom $ randomR (1, 6) :: IO Int
     print =<< replicateM' 5 dice
@@ -34,9 +38,9 @@ main = do
         return i
     print a
     putStrLn "---"
-    -- forM_' [1..3] $ \i -> do
-    --     print i
-    -- putStrLn "---"
+    forM_' [1..3] $ \i -> do
+        print i
+    putStrLn "---"
     -- let y x = x (y x)
     -- y $ \f -> do
     --     r <- dice
