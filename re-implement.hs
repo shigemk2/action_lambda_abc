@@ -14,10 +14,8 @@ replicateM_' 0 _ = return []
 replicateM_' n f = f >> replicateM' (n - 1) f
 
 forM' [] _ = return []
-forM' (x:xs) f = do
-    x' <- f x
-    xs' <- forM' xs f
-    return $ x' : xs'
+forM' (x:xs) f =
+    f x >>= \x' -> forM' xs f >>= \xs' -> return $ x' : xs'
 
 forM_' [] _ = return []
 forM_' (x:xs) f = f x >> forM' xs f
