@@ -10,15 +10,19 @@ replicateM' n m =
     -- (\x -> (return . (x :) =<< (replicateM' (n - 1) m))) =<< m
     (:) <$> m <*> replicateM' (n - 1) m
 
+replicateM_' 0 _ = return []
+replicateM_' n f = do
+    f >> replicateM' (n - 1) f
+
 main = do
     let dice = getStdRandom $ randomR (1, 6) :: IO Int
     print =<< replicateM' 5 dice
     putStrLn "---"
-    -- replicateM_' 3 $ do
-    --     print =<< dice
-    -- putStrLn "---"
-    -- replicateM_' 3 $ print 4
-    -- putStrLn "---"
+    replicateM_' 3 $ do
+        print =<< dice
+    putStrLn "---"
+    replicateM_' 3 $ print 4
+    putStrLn "---"
     -- a <- forM' [1..3] $ \i -> do
     --     print i
     --     return i
