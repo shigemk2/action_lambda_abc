@@ -14,6 +14,12 @@ replicateM_' 0 _ = return []
 replicateM_' n f = do
     f >> replicateM' (n - 1) f
 
+forM' [] _ = return []
+forM' (x:xs) f = do
+    x' <- f x
+    xs' <- forM' xs f
+    return $ x' : xs'
+
 main = do
     let dice = getStdRandom $ randomR (1, 6) :: IO Int
     print =<< replicateM' 5 dice
@@ -23,11 +29,11 @@ main = do
     putStrLn "---"
     replicateM_' 3 $ print 4
     putStrLn "---"
-    -- a <- forM' [1..3] $ \i -> do
-    --     print i
-    --     return i
-    -- print a
-    -- putStrLn "---"
+    a <- forM' [1..3] $ \i -> do
+        print i
+        return i
+    print a
+    putStrLn "---"
     -- forM_' [1..3] $ \i -> do
     --     print i
     -- putStrLn "---"
